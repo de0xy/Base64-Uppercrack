@@ -1,7 +1,10 @@
 #!/usr/bin/python3
+import time
 import base64
-raw = 'aGVsbG8gZnJpZW5kIGhvdyBhcmUgeW91IHRvZGF5Cg=='
+#raw = 'aGVsbG8gZnJpZW5kIGhvdyBhcmUgeW91IHRvZGF5Cg=='
+raw = 'aGVsbG8gZnJpZW5kIGhvdyBhcmUgeW91IHRvZGF5IGFyZSB5b3UgcmVhZHkgdG8gc29sdmUgdGhpcyBwcm9ibGVtIHRoYXQgaXMgaGFyDOG='
 encoded = raw.upper()
+valid_str = list(' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 # pad b64 to valid length
 while len(encoded) % 4 != 0:
@@ -15,7 +18,7 @@ for a in range(0,len(encoded),4):
     except:
         pass
 
-print(b64_chunks)
+#print(b64_chunks)
 
 # generate binary matrix
 bin = [True, False]
@@ -37,10 +40,9 @@ combo_matrix = [(a,b,c,d) for a in bin for b in bin for c in bin for d in bin]
 #       ]
 
 b64_combos = []
-b64_combos2 = []
+corpus = []
 s = ''
 index = 0
-valid_str = list(' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 for chunk in b64_chunks.copy():
     dec_buffer = []
     for combo in combo_matrix:
@@ -64,11 +66,36 @@ for chunk in b64_chunks.copy():
             pass
         s = ''
     index += 1
-    b64_combos.insert(index, [chunk, dec_buffer])
-    b64_combos2.insert(index, dec_buffer)
+    if dec_buffer != []:
+        b64_combos.insert(index, [chunk, dec_buffer])
+        corpus.insert(index, dec_buffer)
 
-print(b64_combos2)
+#print(corpus)
+
+#  pools = [tuple(pool) for pool in corpus]
+#  result = [[]]
+#  for pool in pools:
+    #  result = [x+[y] for x in result for y in pool]
+#  for prod in result:
+    #  ret = ''
+    #  for val in prod:
+        #  ret += val
+#
+    #  time.sleep(.01)
+    #  print("\r{}".format(ret), end="" )
 
 
-
+output = ''
+for options in corpus:
+    print(output,)
+    try:
+        if len(options) <= 1:
+            output += options[0]
+        else:
+            for i in range(len(options)):
+                print("{}) {}".format(i+1, options[i]))
+            answer = input('> ')
+            output += options[int(answer)-1]
+    except: 
+        break
 
